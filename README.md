@@ -45,27 +45,27 @@ The application features:
 ## 📁 Project Structure
 
 ```
+```text
 spotify-clone/
-├── index.html              # Main HTML file
+├── index.html
 ├── css/
-│   ├── style.css           # Main stylesheet
-│   └── utility.css         # Utility classes
+│   ├── style.css
+│   └── utility.css
 ├── js/
-│   ├── script.js           # Main JavaScript functionality
-│   └── Untitled-1.js       # Additional JavaScript
-├── images/                 # UI images and icons
+│   └── script.js
+├── images/
 │   ├── logo.svg
 │   ├── play.svg
 │   ├── pause.svg
 │   ├── volume.svg
 │   └── artist images...
-├── songs/                  # Music files organized by genre/artist
+├── songs/
 │   ├── ashiqui/
 │   ├── Atif-Aslam/
 │   ├── english/
 │   ├── hindi/
 │   └── [other folders]...
-└── vercel.json             # Vercel deployment configuration
+└── vercel.json
 ```
 
 ## 🚀 Deployment
