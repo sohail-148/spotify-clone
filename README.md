@@ -52,7 +52,7 @@ spotify-clone/
 │   └── utility.css         # Utility classes
 ├── js/
 │   ├── script.js           # Main JavaScript functionality
-│   └── Untitled-1.js       # Additional JavaScript
+|
 ├── images/                 # UI images and icons
 │   ├── logo.svg
 │   ├── play.svg
