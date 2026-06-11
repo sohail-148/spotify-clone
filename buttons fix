@@ -1,0 +1,59 @@
+i have div which is flex, inside is 3 more div , left one is song name, rightmost is song duration, centre is
+play,previous and play button, when i play different songs ,all divs move because of song name like sometimes its small
+sometimes its big . so how to fix this
+ChatGPT said:
+ChatGPT
+
+To prevent the divs from shifting when the song name changes in length, you can set a fixed width for the song name div.
+This way, no matter the length of the song name, it will always occupy the same amount of space, and the other elements
+won't move around.
+
+Here's how you can achieve that with flexbox:
+
+<div class="song-container">
+  <div class="song-name">Song Name</div>
+  <div class="controls">
+    <button class="previous">Previous</button>
+    <button class="play">Play</button>
+    <button class="next">Next</button>
+  </div>
+  <div class="song-duration">3:45</div>
+</div>
+
+And the corresponding CSS:
+
+.song-container {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.song-name {
+flex: 1; /* allows it to take up available space */
+min-width: 150px; /* ensures a minimum width */
+max-width: 300px; /* can limit maximum width if needed */
+overflow: hidden;
+text-overflow: ellipsis; /* hides the text that doesn't fit and adds "..." */
+white-space: nowrap; /* prevents the text from wrapping to a new line */
+}
+
+.controls {
+display: flex;
+gap: 10px;
+}
+
+.song-duration {
+min-width: 50px;
+text-align: right;
+}
+
+Explanation:
+
+min-width and max-width: By setting these properties for the .song-name div, you prevent the div from shrinking too much
+or expanding too much based on the song name length.
+text-overflow: ellipsis: If the song name is too long, this will truncate it and add "..." at the end instead of
+breaking the layout.
+white-space: nowrap: Ensures that the song name stays on one line and doesn't wrap to multiple lines, which could cause
+the layout to shift.
+
+This way, your layout will stay consistent regardless of the song name length!
