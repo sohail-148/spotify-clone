@@ -110,34 +110,53 @@ async function getSongs(folder) {
     }
 
     //attach an event listener to each song 
-    Array.from(document.querySelector(".songlist").getElementsByTagName('li')).forEach(e => {
-        e.addEventListener('click', element => {
-            playMusic(e.querySelector('.info').firstElementChild.innerHTML.trim())
+    Array.from(document.querySelector(".songlist").getElementsByTagName('li')).forEach((e, index) => {
+        e.addEventListener('click', () => {
+            const currentFile = decodeURIComponent(currentSong.src.split('/').slice(-1)[0]);
+            if (currentFile === songs[index] && !currentSong.paused) {
+                // Same song is playing — pause it
+                currentSong.pause();
+                playbtn.src = "images/play.svg";
+                updateSongListIcons(false);
+            } else {
+                // Different song or same song paused — play it
+                playMusic(songs[index]);
+            }
         })
     })
 
     return songs
 }
 
+function updateSongListIcons(playing) {
+    const currentFile = decodeURIComponent(currentSong.src.split('/').slice(-1)[0]);
+    const listItems = document.querySelectorAll('.songlist ul li');
+    listItems.forEach((li, index) => {
+        const icon = li.querySelector('.playnow img');
+        if (!icon) return;
+        if (songs[index] === currentFile) {
+            icon.src = playing ? "images/pause.svg" : "images/play.svg";
+        } else {
+            icon.src = "images/play.svg";
+        }
+    });
+}
+
 const playMusic = (track, pause = false) => {
-    // Get the exact filename from our songLibrary
-    const songIndex = songs.indexOf(track);
-    if (songIndex !== -1) {
-        const exactFilename = songs[songIndex];
-        currentSong.src = `${currfolder}/${exactFilename}`;
-    } else {
-        // Fallback: try to convert display name to filename
-        const cleanTrack = track.replaceAll(' ', '_').replaceAll('__', '_');
-        currentSong.src = `${currfolder}/${cleanTrack}`;
-    }
+    currentSong.src = `${currfolder}/${track}`;
 
     if (!pause) {
         currentSong.play();
-        playbtn.src = "images/pause.svg"
+        playbtn.src = "images/pause.svg";
     }
-    document.querySelector('.songinfo').innerHTML = track
-    document.querySelector('.songtime').innerHTML = "00:00 / 00:00"
+    const displayName = track.replaceAll('_', ' ').replace(/^\s+/, '');
+    document.querySelector('.songinfo').innerHTML = displayName;
+    document.querySelector('.songtime').innerHTML = "00:00 / 00:00";
 
+    // Update list icons after src is set (need a tick for src to reflect)
+    if (!pause) {
+        setTimeout(() => updateSongListIcons(true), 0);
+    }
 }
 
 async function displayAlbums() {
@@ -195,10 +214,12 @@ async function main() {
         if (currentSong.paused) {
             currentSong.play()
             playbtn.src = "images/pause.svg"
+            updateSongListIcons(true)
         }
         else {
             currentSong.pause()
             playbtn.src = "images/play.svg"
+            updateSongListIcons(false)
         }
     })
 
@@ -228,7 +249,8 @@ async function main() {
     //add event listener for prev
     previous.addEventListener('click', () => {
         currentSong.pause()
-        let index = songs.indexOf(currentSong.src.split('/').slice(-1)[0])
+        let currentFile = decodeURIComponent(currentSong.src.split('/').slice(-1)[0])
+        let index = songs.indexOf(currentFile)
         if ((index - 1) >= 0) {
             playMusic(songs[index - 1])
         }
@@ -240,7 +262,8 @@ async function main() {
     //add event listener for next
     next.addEventListener('click', () => {
         currentSong.pause()
-        let index = songs.indexOf(currentSong.src.split('/').slice(-1)[0])
+        let currentFile = decodeURIComponent(currentSong.src.split('/').slice(-1)[0])
+        let index = songs.indexOf(currentFile)
         if ((index + 1) < songs.length) {
             playMusic(songs[index + 1])
         }

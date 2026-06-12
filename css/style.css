@@ -311,7 +311,7 @@ body {
 }
 
 .card h2 {
-  font-size: 20 px;
+  font-size: 20px;
 }
 
 .card p {
@@ -380,7 +380,7 @@ body {
 
 
 .songlist {
-  margin-bottom: 34px 0;
+  margin: 34px 0;
   height: 450px;
   overflow: auto;
 }
